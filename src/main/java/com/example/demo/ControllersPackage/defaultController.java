@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,8 +29,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.demo.DAOPackage.DaoClass;
+import com.example.demo.DAOPackage.UsersDao;
 import com.example.demo.ServicePackg.servicePackage;
 import com.example.demo.modelPackage.RecordModelClass;
+import com.example.demo.modelPackage.UsersModel;
 
 @RestController
 public class defaultController {
@@ -69,6 +73,11 @@ public class defaultController {
 
 	}
 
+	
+	
+	
+	
+	
 //	public String HomepageMombasaOne(Model mod) {
 //		List<DaoClass> mydao = service.getalldata();
 //		List<RecordModelClass> mydao1 = new ArrayList<RecordModelClass>();
@@ -171,45 +180,7 @@ public class defaultController {
 
 	}
 
-	public String KilifiTwo(@RequestParam("Artist") String myrtist, @RequestParam("Lyrics") String lyrics,
-			@RequestParam("Desc") String Description, @RequestParam("Dialct") String dialect,
-			@RequestParam("Name") String Name, @RequestParam("Youtube") String youtube,
-			@RequestParam("photo") MultipartFile malti) {
-
-		RecordModelClass record = new RecordModelClass();
-
-		byte[] bytes = null;
-		try {
-			bytes = malti.getBytes();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String result = Base64.getEncoder().encodeToString(bytes);
-
-		record.setArtist(myrtist);
-		record.setDesc(Description);
-		record.setDialct(dialect);
-		record.setLyrics(lyrics);
-		record.setName(Name);
-		record.setPhoto(result);
-		record.setYoutube(youtube);
-
-		System.out.println(record);
-
-		DaoClass dao = new DaoClass();
-		dao.setPasspotphoto(record.getPhoto());
-		dao.setSongArtist(record.getArtist());
-		dao.setSongDesc(record.getDesc());
-		dao.setSongDialct(record.getDialct());
-		dao.setSongName(record.getName());
-		dao.setYoutubelnk(record.getYoutube());
-		dao.setSongLyrics(record.getLyrics());
-		System.out.println("my record " + dao.getSongDialct());
-		service.saveKilifiTworecord(dao);
-
-		return "KilifiSouth";
-	}
+	
 
 	@PutMapping(value = "/updrecord")
 	public RequestEntity<RecordModelClass> LamuThree(@RequestParam("Id") int id,
@@ -270,31 +241,6 @@ System.out.println("the code was executede  successfully......"+mydaocls);
 
 	/////////////////////////////////////////////////
 
-	public String searchController(@RequestParam("name") String nameinput, Model model) {
-		// System.out.println(formInput);
-		List<DaoClass> myd = service.getformdata(nameinput);
-		ModelMapper modelmap = new ModelMapper();
-		modelmap.typeMap(DaoClass.class, RecordModelClass.class).addMappings(mapper -> {
-
-			mapper.map(source -> source.getSongArtist(), RecordModelClass::setArtist);
-			mapper.map(source -> source.getSongDesc(), RecordModelClass::setDesc);
-			mapper.map(source -> source.getSongDialct(), RecordModelClass::setDialct);
-			mapper.map(source -> source.getSongLyrics(), RecordModelClass::setLyrics);
-			mapper.map(source -> source.getPasspotphoto(), RecordModelClass::setPhoto);
-			mapper.map(source -> source.getYoutubelnk(), RecordModelClass::setYoutube);
-			mapper.map(source -> source.getSongName(), RecordModelClass::setName);
-
-		});
-		System.out.println("inside the controller");
-		List<RecordModelClass> collect1 = myd.stream().map(daoclass -> modelmap.map(daoclass, RecordModelClass.class))
-				.collect(Collectors.toList());
-
-		System.out.println("the basic principle");
-		System.out.println("my collect is " + collect1);
-		model.addAttribute("collect", collect1);
-
-		return "makongo";
-	}
 
 	@DeleteMapping(value = "/dltrecord")
 	public ResponseEntity<Object> TanaRvr(@RequestParam("id") int myid) {

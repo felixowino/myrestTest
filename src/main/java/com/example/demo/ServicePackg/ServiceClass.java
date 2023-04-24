@@ -7,18 +7,26 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DAOPackage.DaoClass;
+import com.example.demo.DAOPackage.UsersDao;
 import com.example.demo.RepoPackg.JpaRepoClass;
+import com.example.demo.RepoPackg.Urepo;
 import com.example.demo.entitypackage.LyrcsEntity;
+import com.example.demo.entitypackage.MembersEntity;
 
 
 
 @Service
 public class ServiceClass implements servicePackage {
 	@Autowired
-	JpaRepoClass jpa;
+	private JpaRepoClass jpa;
+	@Autowired
+	private Urepo repo;
+//	@Autowired
+//	private BCryptPasswordEncoder brypt;
 
 	@Override
 	public void saveKilifiTworecord(DaoClass dao) {
@@ -213,20 +221,51 @@ List<DaoClass> collect1 = myentity.stream().map(entityclass-> modelmap.map(entit
 		
 	return null;
 }
+
+	
+	
+	
+	
+	@Override
+	public void savemyuser(UsersDao udao) {
+		System.out.println("nnnnnnnnn "+ udao.getStringseven());
+		System.out.println(">>>>>>>>>>"+udao.getStringfour());
+		BCryptPasswordEncoder brypt=new BCryptPasswordEncoder();
+		System.out.println("password is "+udao.getStringseven());
+		String encode = brypt.encode(udao.getStringseven());
+		udao.setStringseven(encode);
+		System.out.println("the encoded pass "+ udao.getStringseven() );
+		System.out.println(">>>>>>>>>>"+udao.getStringfour());
+		udao.setStringfiften(1);
+		System.out.println("second name===== "+udao.getStringfour());
+		// TODO Auto-generated method stub
+		ModelMapper mapp = new ModelMapper();
+		mapp.typeMap(UsersDao.class, MembersEntity.class).addMappings(mapper ->
+				{
+			mapper.map(my->my.getStringone(), MembersEntity::setId);
+			mapper.map(my->my.getStringtwo(), MembersEntity::setFirstName);
+			mapper.map(my->my.getStringfour(), MembersEntity::setSecondName);
+			mapper.map(my->my.getStringseven(), MembersEntity::setPassword);
+			mapper.map(my->my.getStringten(), MembersEntity::setEmail);
+			mapper.map(my->my.getStringtwelve(), MembersEntity::setAuthorities);
+			mapper.map(my->my.getStringfiften(), MembersEntity::setEnabled);
+			mapper.map(my->my.getStringthree(), MembersEntity::setUsername);
+				}
+				
+				
+				);
+		MembersEntity mymbers = mapp.map(udao, MembersEntity.class);
+		System.out.println("the id is>>>>>>> "+ mymbers.getId());
+		System.out.println("....................."+mymbers);
+		repo.save(mymbers);
+		
+		System.out.println("the id is>>>>>>> "+ mymbers.getId());
+
+		System.out.println("save sucessfully");
+		
+	}
+	
 }
-		
-		
-	
-		
-		
-	
-			
-			
-			
-			
-			
-			
-			
 
 
 
