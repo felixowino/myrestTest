@@ -1,26 +1,5 @@
 package com.example.demo.ControllersPackage;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -28,11 +7,25 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.DAOPackage.DaoClass;
-import com.example.demo.DAOPackage.UsersDao;
 import com.example.demo.ServicePackg.servicePackage;
 import com.example.demo.modelPackage.RecordModelClass;
-import com.example.demo.modelPackage.UsersModel;
 
 @RestController
 public class defaultController {
@@ -122,7 +115,10 @@ public class defaultController {
 			@RequestParam("Youtube") String youtube, @RequestParam("photo") MultipartFile malti) {
 
 		System.out.println("my data is " + myrtist + lyrics);
-
+//		Authentication authenticate = null ;
+//		boolean authenticated = authenticate.isAuthenticated();
+//		System.out.println();
+		
 		////////////////////////////////////
 
 		RecordModelClass record = new RecordModelClass();

@@ -22,7 +22,7 @@ public class myUsersConfigClass implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		MembersEntity dbuser=mymbrs.findByUsername("username");
+		MembersEntity dbuser=mymbrs.findByUsername(username);
 		if(dbuser == null){
 	        throw new UsernameNotFoundException("Utente non trovato");
 	    }

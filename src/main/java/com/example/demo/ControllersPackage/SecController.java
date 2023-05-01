@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,8 +33,8 @@ import com.example.demo.modelPackage.UsersModel;
 public class SecController {
 	@Autowired
 	private myUsersConfigClass uses;
-
-	private AuthenticationManager manager;
+	@Autowired
+	  private AuthenticationManager authenticationManager;
 
 	@Autowired
 	private servicePackage myservice;
@@ -64,20 +65,25 @@ public class SecController {
 	}
 
 	
-	  @PostMapping( value="/login" )
-	public ResponseEntity<?> customelogin(@RequestParam  String username, @RequestParam String password) {
+	  @PostMapping( value="/mylogin" )
+	public ResponseEntity<?> customelogin(@RequestParam  String username, @RequestParam String password, HttpServletRequest  customerequest) {
 
 		  System.out.println(username+"  "+password);
 		try {
+			System.out.println("the ?????????????");
 			UserDetails userDetails = uses.loadUserByUsername(username);
+			System.out.println("the ?????????????");
 			System.out.println("hhhhhhhhh");
 			UsernamePasswordAuthenticationToken mytoken = new UsernamePasswordAuthenticationToken(userDetails, password,
 					userDetails.getAuthorities());
-			Authentication authenticate = manager.authenticate(mytoken);
+			System.out.println("the ?????????????"+ mytoken);
+			
+		Authentication authenticate = authenticationManager.authenticate(mytoken);
+			System.out.println(">>>>>>>>>>> "+authenticate);
 			SecurityContextHolder.getContext().setAuthentication(authenticate);
-		//	HttpSession ses = customerequest.getSession(true);
-		//	ses.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-				//	SecurityContextHolder.getContext());
+			HttpSession ses = customerequest.getSession(true);
+		ses.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+					SecurityContextHolder.getContext());
 
 			return ResponseEntity.ok().build();
 		} catch (AuthenticationException e) {
